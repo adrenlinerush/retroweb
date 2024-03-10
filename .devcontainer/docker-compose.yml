@@ -1,0 +1,12 @@
+services:
+  devcontainer:
+    build: .
+    command: sleep infinity
+    ports:
+      - 4000:4000
+    volumes:
+      - ..:/workspace:cached
+      - cache:/workspace/src/static/cache:rw
+
+volumes:
+  cache:

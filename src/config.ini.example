@@ -1,0 +1,21 @@
+[MAIN]
+StockApiToken=
+geoapi_key=
+
+
+[feed_urls]
+fox=http://feeds.foxnews.com/foxnews/latest
+slashdot=http://rss.slashdot.org/Slashdot/slashdotMain
+shtfplan=https://feeds.feedburner.com/SHTFplan
+naturalnews=https://www.naturalnews.com/feedlyrss.xml
+zerohedge=http://feeds.feedburner.com/zerohedge/feed
+qctimes=https://qctimes.com/search/?f=rss&t=article&c=news/local&l=25&s=start_time&sd=desc
+
+
+[stocks]
+DE=John Deere
+DOW=Dow Jones Inc.
+CL=Crude Oil
+DJI=Dow Jones Industrial Average
+NDAQ=Nasdaq
+

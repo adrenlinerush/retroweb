@@ -1,0 +1,22 @@
+
+;RTL8139  OEMSETUP.INF File:
+
+[netcard]
+RTL8139="RTL8139 Fast Ethernet Adapter",000,ndis,ethernet,real,RTL8139,RTL8139_nif
+
+
+[RTL8139]
+devdir=?:rtsnd.dos
+device=rtsnd.dos,@devdir\rtsnd.dos
+
+[RTL8139_nif]
+drivername=rtsnd$
+param=Medium,"Medium type ",text,"_Auto,_10Half,_10Full,_100half,_100Full",_Auto,0x30
+param=NETADDRESS,"Network Address",chars,13,"@000000000000",0x02
+param=ETHERID,"Node Address",chars,13,"@000000000000",0x02
+param=BusNo ,"Adpater's Bus Number",int,"0,255,1",0,0x32
+param=DeviceNo ,"Adpater's Device Number",int,"0,31,1",0,0x32
+param=TxFiFo ,"Adpater's TX Early Threshold",int,"0,63,1",5,0x32
+
+
+

@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <!-- Created with AOLpress/2.0 -->
+    <title>Windows 3.11</title>
+  </head>
+  <body>
+    <p>
+      I recently built another MS DOS 6.22\Windows 3.11 system. &nbsp;Here are
+      my notes for my standard base build along with download of relevent
+      files.<br />
+    </p>
+    <p>SPECS:</p>
+    <ul>
+      <li>Asus P2B 1.02 Motherboard</li>
+      <li>Slot 1 Pentium 2 333</li>
+      <li>Realtek RTL8139c 10/100 Card</li>
+      <li>Seagate Barracuda 40GB IDE HDD (only about 8gb is useable to dos)</li>
+      <li>Adaptec AHA-2940 SCSI Controller</li>
+      <li>Compaq CR-503BCQ SCSI CDROM</li>
+      <li>RIVA 128 AGP Graphics Card</li>
+      <li>Sound Blaster 16 CT4170 ISA Sound Card</li>
+      <li>Dell NEC Floppy Drive</li>
+      <li>NOS Thermaltake Purepower 2.0</li>
+      <li>
+        The cheapest ATX case I could find, some geeks thing from ebay that was
+        "new" but It came broken and I had to some repair.
+      </li>
+    </ul>
+    <p>Install MS DOS 6.22 from floppy, including the supplimental disk.</p>
+    <p>
+      <a href="/static/Win311/MS-DOS_6.22_Disk_1_Setup.IMA">Disk 1</a>
+      <a href="/static/Win311/MS-DOS_6.22_Disk_2.IMA">Disk 2</a>
+      <a href="/static/Win311/MS-DOS_6.22_Disk_3.IMA">Disk 3</a>
+      <a href="/static/Win311/MS-DOS_6.22_Supplemental_Disk.IMA"
+        >Supplemental Disk</a
+      >
+    </p>
+    <p>
+      Since I used a 40GB drive I wanted to access more than 2GB. &nbsp;I used
+      fdisk, created an extended dos partition and 3 more logical drives (D,E,
+      and F). &nbsp;This will require that we make changes to config.sys later
+      regarding the LASTDRIVE option or the cdrom driver won't know where to add
+      the drive.<br />
+      After DOS is installed install the CD-ROM Drivers. &nbsp;This build I had
+      a scsi pci card CD-ROM. &nbsp;I just coppied the required files from a
+      Windows 98SE boot floppy and placed them in a newly created directory
+      C:\UTILS. &nbsp;I use this as a standard place to keep my additional dos
+      TSR's and such.
+    </p>
+    <p>
+      <a href="/static/Win311/UTILS/ASPI8DOS.SYS">aspi8dos.sys</a>
+      <a href="/static/Win311/UTILS/ASPICD.SYS">aspicd.sys</a>
+      <a href="/static/Win311/UTILS/MSCDEX.EXE">mscdex.exe</a>
+    </p>
+    <p>
+      Then add the following 3 lines to c:\config.sys. &nbsp;Be sure to include
+      LASTDRIVE if you created a logical dos drive.
+    </p>
+    <p>
+      DEVICE=C:\utils\aspi8dos.sys<br />
+      DEVICE=C:\utils\aspcd.sys /D:ASPICD0<br />
+      LASTDRIVE=Z
+    </p>
+    <p>You will also need to add the following line to c:\autoexec.bat.</p>
+    <p>c:\utils\mscdex.ese /D:ASPICD0</p>
+    <p>
+      Now if you are using an IDE cdrom drive you can use the following files
+      and configuration instead.
+    </p>
+    <p>
+      <a href="/static/Win311/UTILS/MSCDEX.EXE">mscdex.exe</a>
+      <a href="/static/Win311/UTILS/VIDE-CDD.SYS">vide-cdd.sys</a>
+    </p>
+    <p>Add to config.sys:</p>
+    <p>DEVICE=C:\utils\vide-cdd.sys /D:MSCD001</p>
+    <p>Add to Autoexec.bat:</p>
+    <p>c:\utils\mscdex.ese /D:MSCD001</p>
+    <p>
+      Reboot and you will now have access to your cdrom drive. &nbsp;If you
+      added 3 logical hard drives it will be G. &nbsp;If you just have the one
+      drive it will be D. &nbsp;The output from the TSR will tell you the drive
+      dletter. <br />
+      I like to add mouse support and tab completion to the command line right
+      away. &nbsp;To do that you need
+      <a href="/static/Win311/UTILS/MOUSE.COM">mouse.com</a> and
+      <a href="/static/Win311/UTILS/DOSKEY.COM">doskey.com</a>. &nbsp;I just add
+      them to the utils directory and add the following lines to autoexec.bat.
+    </p>
+    <p>
+      c:\utils\doskey.com<br />
+      c:\utils\mouse.com
+    </p>
+    <p>Reboot your computer.</p>
+    <p>
+      Now copy over the network card drivers for Windows 3.11 so they are
+      available durring the installation. &nbsp;Or you can put them on a floppy.
+      &nbsp;You can even install Windows 3.11 without the network card and add
+      it later. &nbsp;I prefer the first option. &nbsp;Here are the Realtek
+      RTL8139 series (a/b/c) driver files. &nbsp;I've had really good luck with
+      this card and have this in a couple systems.
+    </p>
+    <p>
+      <a href="/static/Win311/UTILS/rtl8139/OEMSETUP.INF">oemsetup.inf</a>
+      <a href="/static/Win311/UTILS/rtl8139/PROTOCOL.INI">protocol.ini</a>
+      <a href="/static/Win311/UTILS/rtl8139/RTL8139.NIF">rtl8139.nif</a>
+      <a href="/static/Win311/UTILS/rtl8139/RTSND.DOS">rtsnd.dos</a>
+    </p>
+    <p>
+      Now that you have a cd drive its much easier to install Windows 3.11 from
+      it rather than a bunch of floppies. &nbsp;I've extracted all the floppies
+      and added them to a zip file here that you can burn to a cd. &nbsp;Simply
+      change to the drive and the directory in the zip file and run setup.exe.
+    </p>
+    <p><a href="/static/Win311/win311.zip">win311.zip</a></p>
+    <p>
+      Follow the instructions on-screen for windows setup. &nbsp;When you get
+      the the printer page click the install button with no printer to continue.
+      &nbsp;This seemed odd to me.<br />
+    </p>
+    <p>
+      When you get to the networks page click the networks button and select the
+      radio button for Install Microsoft Windows Network. Choose Unlisted or
+      Updated Network Adapter when asked and enter the location you put the
+      windows network driver files. &nbsp;
+    </p>
+    <p>
+      You will have to reboot after the install. &nbsp;Type win on the command
+      line to start windows.
+    </p>
+    <p>
+      Now we can install the TCP/IP stack. &nbsp;You will need to make floppy
+      disks for the install or extract them and put them on a CD. &nbsp;
+    </p>
+    <p><a href="/static/Win311/TCPIP.ZIP">tcpip.zip</a><br /></p>
+    <p>
+      To install:<br />
+      Open Windows Wetup in the Main program group.<br />
+      Option --&gt; Change Network Settings<br />
+      Click Drivers Button<br />
+      Add Protocol Button<br />
+      Unlisted or Updated Protocol<br />
+      Enter a:\ in the dialgog with floppy your created with the tcp/ip files
+      inserted.<br />
+      Reboot when complete.<br />
+    </p>
+    <p>
+      Now that we have a TCP/IP stack I like to install a better ftp client, web
+      browser and winzip to make it easier to transfer files around and get
+      things installed.<br />
+      <br />
+    </p>
+    <a href="/static/Win311/winzip63.exe">Winzip 6.3</a><br />
+    <a href="/static/Win311/WSFTP506.EXE">WS-FTPLE 5.06</a><br />
+    <a href="/static/Win311/Nav408.exe">Netscape 4.08</a><br />
+    <a href="/static/Win311/ie5win31.exe">IE5</a><br />
+    <br />
+    Installing the graphics drivers.&nbsp; For the RIVA128 card I have installed
+    you can get the driver here.<br />
+    <br />
+    <a href="/static/Win311/R128W311.ZIP">Riva 128 Windows 3.11 Drivers</a
+    ><br />
+    <br />
+    To install:<br />
+    Windows Setup --&gt; Options --&gt; vChange System Settings<br />
+    display drop down scroll to bottom other display<br />
+    enter location you put the driver files<br />
+    <br />
+    If you want to use a card that doesn't have a native windows 3.11 driver but
+    is VESA compatible you can use the svga patch and get 1024x768 and 256
+    colors.<br />
+    Here is the already patched driver file:
+    <a href="/static/Win311/SVGA256.DRV">svga256.drv</a><br />
+    Or if you want to patch your own:
+    <a href="/static/Win311/SVGAPTCH.EXE">svgaptch.exe</a><br />
+    Place the driver in c:\windows\system and then select svga in the display
+    drop down (windows setup, options,change system settings).<br />
+    <br />
+    Now might be a good time to run memmaker in dos to update your autoexec.bat
+    and config.sys and put everything it can into high memory.<br />
+    <br />
+    While we're working on memory, windows requires the use of the first 1mb of
+    memory for 16 compatibility.&nbsp; This means you will get not enough memory
+    errors frequently if applications fill that space up.&nbsp; There are a
+    couple of options out there to keep that space free.&nbsp; I use the
+    syshook.drv sit in front of the system.drv.<br />
+    <br />
+    <a href="/static/Win311/SYSHOOK.ZIP">syshook.zip</a><br />
+    <br />
+    Read the instructions in the zip file to install.&nbsp; I found that you may
+    need to go lower than 400 for the reserve especially with a high resolution
+    graphics adapter.<br />
+    <br />
+    Installing the soundblaster drivers requires 2 parts with a reboot in
+    between. Download the zip here:
+    <a href="/static/Win311/SB16.ZIP">sb16.zip</a><br />
+    Extract to c:\sb16 using winzip.&nbsp; Run the install for ctcm first from
+    dos.&nbsp; Not dos prompt in windows but acutal dos.&nbsp; Reboot then
+    install the other.&nbsp; You should have sound in windows and dos.&nbsp;
+    Sometimes you need to edit c:\ctcm\ctpnp.cf and chage the IRQ to 5, even if
+    you have IRQ 5 free in the bios or reserved for ISA.<br />
+    <br />
+    I usually install Calmira 3.31 and replace progman.exe in system.ini as well
+    as taskman.exe.&nbsp; The instructions are in the archive and help.&nbsp;
+    Calmira's website is still up and in the links but I will include the
+    downloads here.<br />
+    <br />
+    <a href="/static/Win311/c33setup.exe">Calmira 3.3 Installer</a><br />
+    <a href="/static/Win311/cal331up.zip">Calmira 3.31 Upgrade</a><br />
+    <br />
+    Win32s is a subset of the win32 api that can be installed on windows
+    3.11.&nbsp; This adds to the availablity of applications that can be
+    installed.&nbsp; I reccomend you use it.<br />
+    <br />
+    <a href="/static/Win311/Win32s/disk1.img">Disk 1</a>
+    <a href="/static/Win311/Win32s/disk2.img">Disk 2</a>
+    <a href="/static/Win311/Win32s/disk3.img">Disk 3</a>
+    <br />
+    <br />
+    I used to use shims like dis_pkt9 and winpkt to share my windows network
+    with dos.&nbsp; I have since gone away from that and switched to using the
+    native dos packet driver or odi driver and creating a boot menu.&nbsp; None
+    the less they are included here with instructions in the archive.<br />
+    <br />
+    <a href="/static/Win311/UTILS/Dis_pkt9.zip">dis_pkt9</a>
+    <a href="/static/Win311/UTILS/Winpkt.zip">winpkt</a>
+    <br />
+    <br />
+    As I said I've got to creating menu items.&nbsp; I have 3 options, Windows
+    3.11, Dos with Packet Driver, and Dos with IPX.&nbsp; Here are the files
+    needed for the packet driver and ipx.<br />
+    Packet Driver: <a href="/static/Win311/UTILS/RTSPKT.COM">rtspkt.com</a>
+    <br />
+    ODI\IPX Driver stack:
+    <a href="/static/Win311/UTILS/IPX/IPXODI.COM">ipxodi.com</a>
+    <a href="/static/Win311/UTILS/IPX/LSL.COM">lsl.com</a>
+    <a href="/static/Win311/UTILS/IPX/NET.CFG">Net.cfg</a>
+    <a href="/static/Win311/UTILS/IPX/RTSODI.COM">rtsodi.com</a>
+    <a href="/static/Win311/UTILS/IPX/RTSODI.COM">rtsodi.ins</a><br />
+    Make sure the ODI\IPX files are in the same directory.<br />
+    <br />
+    Config.sys:<br />
+    [MENU]<br />
+    MENUITEM=WIN, Windows 3.11<br />
+    MENUITEM=DOS, MS DOS 6.22 W/Packet Driver<br />
+    MENUITEM=IPX, MS DOS 6.22 W/IPX Support<br />
+    <br />
+    [COMMON]<br />
+    DEVICE=C:\DOS\HIMEM.SYS<br />
+    DEVICE=C:\DOS\EMM386.EXE RAM<br />
+    BUFFERS=15,0<br />
+    FILES=40<br />
+    DOS=HIGH,UMB<br />
+    LASTDRIVE=Z<br />
+    FCBS=4,0<br />
+    DEVICE=C:\CTCM\CTCM.EXE<br />
+    REM ** FILES=30<br />
+    DEVICEHIGH=C:\DOS\SETVER.EXE<br />
+    DEVICEHIGH=C:\UTILS\ASPI8DOS.SYS<br />
+    DEVICE=C:\UTILS\ASPICD.SYS /D:ASPICD0<br />
+    STACKS=9,256<br />
+    <br />
+    [WIN]<br />
+    DEVICEHIGH=C:\WINDOWS\IFSHLP.SYS<br />
+    <br />
+    [DOS]<br />
+    REM DEVICEHIGH=C:\WINDOWS\IFSHLP.SYS<br />
+    <br />
+    [IPX]<br />
+    <br />
+    <br />
+    Autoexec.bat:<br />
+    SET SOUND=C:\SB16<br />
+    SET BLASTER=A220 I5 D3 H3 P300 T6<br />
+    SET MIDI=SYNTH:1 MAP:E<br />
+    SET CTCM=C:\CTCM<br />
+    C:\SB16\DIAGNOSE /S /W=C:\WINDOWS<br />
+    C:\SB16\MIXERSET /P /Q<br />
+    C:\CTCM\CTCU /S /W=C:\WINDOWS<br />
+    LH /S C:\DOS\SMARTDRV.EXE /X<br />
+    LH C:\UTILS\MSCDEX.EXE /S /D:ASPICD0<br />
+    LH C:\UTILS\DOSKEY.COM<br />
+    PATH=C:\DOS<br />
+    SET TEMP=C:\DOS<br />
+    @ECHO OFF<br />
+    PROMPT $p$g<br />
+    <br />
+    GOTO %config%<br />
+    <br />
+    :DOS<br />
+    C:\UTILS\MOUSE.COM /Y<br />
+    LH C:\UTILS\RTSPKT.COM 0x60<br />
+    REM LH /S C:\WINDOWS\net start<br />
+    REM LH C:\UTILS\WINPKT\WINPKT 0x60 0x63<br />
+    GOTO END<br />
+    <br />
+    :WIN<br />
+    LH /S C:\WINDOWS\net start<br />
+    PATH=C:\WINDOWS;%PATH%<br />
+    PATH=E:\DELPHI\IBLOCAL\BIN;%PATH%<br />
+    WIN<br />
+    GOTO END<br />
+    <br />
+    :IPX<br />
+    C:\UTILS\MOUSE.COM /Y<br />
+    LH C:\UTILS\IPX\LSL.COM<br />
+    LH C:\UTILS\IPX\RTSODI.COM<br />
+    LH C:\UTILS\IPX\IPXODI.COM<br />
+    <br />
+    :END<br />
+    <br />
+    One final thing is you probably want to install the CD player to media
+    player.<br />
+    Control Panel -&gt; Drivers<br />
+    Add Button<br />
+    Select [MCI] CD Audio<br />
+    Put in your cd with win311 install and specify directory if required.<br />
+    You can now play CD's from media player by selecting CD Audio from device
+    drop down.<br />
+    <br />
+  </body>
+</html>

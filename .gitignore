@@ -1,0 +1,4 @@
+src/static/cache
+src/config.ini
+src/__pycache__
+*.pyc
