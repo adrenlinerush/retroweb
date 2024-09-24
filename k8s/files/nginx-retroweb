@@ -1,5 +1,5 @@
 server {
-        server_name retro.adrenlinerush.net;
+        server_name retro.adrenlinerush.net retro.adrenlinerush.com retro.adrenlinerush.us;
         location  / {
                 proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
                 proxy_pass http://k8s;

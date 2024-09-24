@@ -73,11 +73,29 @@
         dest: /etc/nginx/sites-enabled/nginx-retroweb
         state: link
       notify: Restart NGINX
-    - name: create dns record record
+    - name: create dns record record .net
       community.dns.hetzner_dns_record:
         hetzner_token: "{{ lookup('env', 'TF_VAR_hcloud_dns_token') }}"
         state: present
         zone_name: "adrenlinerush.net"
+        prefix: "retro"
+        type: A
+        value: "{{ hostvars['k3s-bastion'].ansible_host }}"
+        ttl: 60
+    - name: create dns record record .com
+      community.dns.hetzner_dns_record:
+        hetzner_token: "{{ lookup('env', 'TF_VAR_hcloud_dns_token') }}"
+        state: present
+        zone_name: "adrenlinerush.com"
+        prefix: "retro"
+        type: A
+        value: "{{ hostvars['k3s-bastion'].ansible_host }}"
+        ttl: 60
+    - name: create dns record record .us
+      community.dns.hetzner_dns_record:
+        hetzner_token: "{{ lookup('env', 'TF_VAR_hcloud_dns_token') }}"
+        state: present
+        zone_name: "adrenlinerush.us"
         prefix: "retro"
         type: A
         value: "{{ hostvars['k3s-bastion'].ansible_host }}"

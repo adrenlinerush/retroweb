@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`retroweb.rancher.adrenlinerush.site`) || Host(`retro.adrenlinerush.net`)
+    - match: Host(`retroweb.rancher.adrenlinerush.site`) || Host(`retro.adrenlinerush.net`) || Host(`retro.adrenlinerush.com`) || Host(`retro.adrenlinerush.us`)
       kind: Rule
       services:
         - name: retroweb-service
