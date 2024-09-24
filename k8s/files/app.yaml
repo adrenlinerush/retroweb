@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: retroweb
+  name: retroweb 
+  labels:
+    app: retroweb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: retroweb
+  template:
+    metadata:
+      labels:
+        app: retroweb
+    spec:
+      containers:
+      - name: retroweb
+        image: registry.rancher.adrenlinerush.site/retroweb:latest
+        ports:
+        - containerPort: 3000
+      imagePullSecrets:
+      - name: registry-creds

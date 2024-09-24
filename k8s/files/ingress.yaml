@@ -1,0 +1,14 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: retroweb-ingress
+  namespace: retroweb
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`retroweb.rancher.adrenlinerush.site`) || Host(`retro.adrenlinerush.net`)
+      kind: Rule
+      services:
+        - name: retroweb-service
+          port: 80

@@ -1,0 +1,90 @@
+- name: Deploy RetroWeb to K8s
+  hosts: bastion
+  tasks:
+    - name: copy app defintion
+      copy:
+        src: files/app.yaml
+        dest: /root/retroweb-app.yaml
+        owner: root
+        group: root
+        mode: '0644'
+    - name: copy service defintion
+      copy:
+        src: files/service.yaml
+        dest: /root/retroweb-service.yaml
+        owner: root
+        group: root
+        mode: '0644'
+    - name: copy ingress defintion
+      copy:
+        src: files/ingress.yaml
+        dest: /root/retroweb-ingress.yaml
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Create namespace
+      kubernetes.core.k8s:
+        name: retroweb
+        api_version: v1
+        kind: Namespace
+        state: present
+    - name: Create Docker registry secret
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: registry-creds
+            namespace: retroweb
+          type: kubernetes.io/dockerconfigjson
+          data:
+            .dockerconfigjson: "{{
+              {
+                'auths': {
+                  'registry.rancher.adrenlinerush.site': {
+                          'auth': lookup('env', 'REGISTRY_HTTP_BASIC')
+                  }
+                }
+            } | to_json | b64encode }}"
+    - name: create app
+      kubernetes.core.k8s:
+        state: present
+        src: /root/retroweb-app.yaml
+    - name: create service
+      kubernetes.core.k8s:
+        state: present
+        src: /root/retroweb-service.yaml
+    - name: create ingress
+      kubernetes.core.k8s:
+        state: present
+        src: /root/retroweb-ingress.yaml
+    - name: Add nginx configuration
+      copy:
+        src: files/nginx-retroweb
+        dest: /etc/nginx/sites-available/
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart NGINX
+    - name: Enable website configuration
+      file:
+        src: /etc/nginx/sites-available/nginx-retroweb
+        dest: /etc/nginx/sites-enabled/nginx-retroweb
+        state: link
+      notify: Restart NGINX
+    - name: create dns record record
+      community.dns.hetzner_dns_record:
+        hetzner_token: "{{ lookup('env', 'TF_VAR_hcloud_dns_token') }}"
+        state: present
+        zone_name: "adrenlinerush.net"
+        prefix: "retro"
+        type: A
+        value: "{{ hostvars['k3s-bastion'].ansible_host }}"
+        ttl: 60
+
+  handlers:
+    - name: Restart NGINX
+      service:
+        name: nginx
+        state: restarted
